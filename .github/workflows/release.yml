@@ -1,5 +1,8 @@
 name: Release
 run-name: CD - Validate and Create New Release
+permissions:
+  contents: write
+  pull-requests: write
 on:
   workflow_dispatch:
     inputs:

@@ -41,27 +41,28 @@ jobs:
         id: validate-version
         run: node .github/scripts/comparePackageVersions.mjs ${{ steps.package-version.outputs.current_version }} ${{ github.event.inputs.version }}
 
-      uses: actions/github-script@v6
-        with:
-          script: |
-            const { owner, repo } = context.repo;
-            const newVersion = core.getInput('version');
-            const currentVersion = '${{ steps.package-version.outputs.current_version }}';
+      - name: Create Release
+        uses: actions/github-script@v6
+          with:
+            script: |
+              const { owner, repo } = context.repo;
+              const newVersion = core.getInput('version');
+              const currentVersion = '${{ steps.package-version.outputs.current_version }}';
 
-            try {
-              await github.rest.repos.createRelease({
-                owner,
-                repo,
-                tag_name: newVersion,
-                name: `v${newVersion}`,
-                body: `## Changes\n- New version: ${newVersion}\n- Previous version: ${currentVersion}`,
-                draft: false,
-                prerelease: false,
-                generate_release_notes: false,
-              });
-            } catch (error) {
-              core.setFailed(`Failed to create release: ${error.message}`);
-            }
+              try {
+                await github.rest.repos.createRelease({
+                  owner,
+                  repo,
+                  tag_name: newVersion,
+                  name: `v${newVersion}`,
+                  body: `## Changes\n- New version: ${newVersion}\n- Previous version: ${currentVersion}`,
+                  draft: false,
+                  prerelease: false,
+                  generate_release_notes: false,
+                });
+              } catch (error) {
+                core.setFailed(`Failed to create release: ${error.message}`);
+              }
 
       - name: Update package.json file
         run: |
@@ -100,5 +101,3 @@ jobs:
             } catch (error) {
               core.setFailed(`Failed to create pull request: ${error.message}`);
             }
-
-    

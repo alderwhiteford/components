@@ -1,8 +1,5 @@
 name: Release
 run-name: CD - Validate and Create New Release
-permissions:
-  contents: write
-  pull-requests: write
 on:
   workflow_dispatch:
     inputs:
@@ -58,7 +55,7 @@ jobs:
           prerelease: false
           generate_release_notes: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN }}
 
       - name: Update package.json file
         run: |
@@ -74,7 +71,7 @@ jobs:
         
       - name: Push changes to repository
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN }}
         run: |
           git push --set-upstream origin release-v${{ github.event.inputs.version }}
 
@@ -89,6 +86,6 @@ jobs:
           head: release-v${{ github.event.inputs.version }}
           base: main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN }}
 
     

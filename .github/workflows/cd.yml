@@ -2,7 +2,8 @@ name: Publish
 run-name: CD - Publish to NPM
 on:
   pull_request:
-    branches: [release-v*]
+    branches: 
+      - 'release-v*'
 jobs:
   build:
     runs-on: ubuntu-latest

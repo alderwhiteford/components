@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 import semver from 'semver';
-import { process } from 'node';
 
 const currentVersion = process.argv[2];
 const newVersion = process.argv[3];

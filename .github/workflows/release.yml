@@ -5,8 +5,13 @@ on:
     inputs:
       version:
         description: 'Version to release: Syntax - (*.*.*)'
-        required: true'
+        required: true
         type: string
+
+# Ensures that only one job group runs at a time to avoid resource waste
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
   
 jobs:
   create-release:

@@ -56,7 +56,7 @@ jobs:
           body: "Release v${{ github.event.inputs.version }}"
           draft: true
           prerelease: false
-          generate_release_notes: false
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

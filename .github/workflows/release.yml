@@ -21,6 +21,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install Dependencies
+        run: npm ci
+
       - name: Retrieve current package version
         id: package-version
         run: |
@@ -55,9 +58,6 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Install Dependencies
-        run: npm ci
 
       - name: Publish Release
         run: npm publish --provenance --access public

@@ -3,8 +3,6 @@ run-name: CI - Test / Lint / Build
 on: 
   pull_request:
     branches: ["*"]
-  push: 
-    branches: ["main"]
   
 # Ensures that only one job group runs at a time to avoid resource waste
 concurrency:

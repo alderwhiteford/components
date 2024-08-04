@@ -1,0 +1,3 @@
+type TestProps = {
+    test: string;
+};

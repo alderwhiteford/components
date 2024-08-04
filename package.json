@@ -11,10 +11,11 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "test": "jest --watchAll --verbose",
+    "test": "jest",
+    "test:watch": "jest --watch --verbose",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "lint": "eslint ./src/ --ext .ts,.tsx",
+    "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix"
   },
   "repository": {

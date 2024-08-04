@@ -41,21 +41,27 @@ jobs:
         id: validate-version
         run: node .github/scripts/comparePackageVersions.mjs ${{ steps.package-version.outputs.current_version }} ${{ github.event.inputs.version }}
 
-      - name: Create Release
-        id: create-release
-        uses: octokit/request-action@v2.x
+      uses: actions/github-script@v6
         with:
-          route: POST /repos/{owner}/{repo}/releases
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.repository }}
-          tag_name: ${{ github.event.inputs.version }}
-          name: v${{ github.event.inputs.version }}
-          body: "Release v${{ github.event.inputs.version }}"
-          draft: true
-          prerelease: false
-          generate_release_notes: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const newVersion = core.getInput('version');
+            const currentVersion = '${{ steps.package-version.outputs.current_version }}';
+
+            try {
+              await github.rest.repos.createRelease({
+                owner,
+                repo,
+                tag_name: newVersion,
+                name: `v${newVersion}`,
+                body: `## Changes\n- New version: ${newVersion}\n- Previous version: ${currentVersion}`,
+                draft: false,
+                prerelease: false,
+                generate_release_notes: false,
+              });
+            } catch (error) {
+              core.setFailed(`Failed to create release: ${error.message}`);
+            }
 
       - name: Update package.json file
         run: |
@@ -77,15 +83,22 @@ jobs:
 
       - name: Create Pull Request
         id: create-pull-request
-        uses: octokit/request-action@v2.x
+        uses: actions/github-script@v6
         with:
-          route: POST /repos/{owner}/{repo}/pulls
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.repository }}
-          title: "Update version to ${{ github.event.inputs.version }}"
-          head: release-v${{ github.event.inputs.version }}
-          base: main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const newVersion = core.getInput('version');
+
+            try {
+              await github.rest.pulls.create({
+                owner,
+                repo,
+                title: `Update version to ${newVersion}`,
+                head: `release-v${newVersion}`,
+                base: 'main',
+              });
+            } catch (error) {
+              core.setFailed(`Failed to create pull request: ${error.message}`);
+            }
 
     

@@ -14,4 +14,4 @@ describe('Test', () => {
 
         expect(screen.getByTitle('test')).toHaveTextContent('test');
     });
-})
+});

@@ -44,22 +44,6 @@ jobs:
         id: validate-version
         run: node .github/scripts/comparePackageVersions.mjs ${{ steps.package-version.outputs.current_version }} ${{ github.event.inputs.version }}
 
-      - name: Create Release
-        id: create-release
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/{owner}/{repo}/releases
-          owner: alderwhiteford
-          repo: components
-          tag_name: ${{ github.event.inputs.version }}
-          name: v${{ github.event.inputs.version }}
-          body: "Release v${{ github.event.inputs.version }}"
-          draft: true
-          prerelease: false
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Update package.json file
         run: |
           jq --arg newVersion "${{ github.event.inputs.version }}" '.version = $newVersion' package.json > tmp.json && mv tmp.json package.json
@@ -68,7 +52,6 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git checkout staging
           git checkout -b release-v${{ github.event.inputs.version }}
           git add package.json
           git commit -m "Update version to ${{ github.event.inputs.version }}"
@@ -89,6 +72,22 @@ jobs:
           title: "Update version to ${{ github.event.inputs.version }}"
           head: release-v${{ github.event.inputs.version }}
           base: master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create Release
+        id: create-release
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{owner}/{repo}/releases
+          owner: alderwhiteford
+          repo: components
+          tag_name: ${{ github.event.inputs.version }}
+          name: v${{ github.event.inputs.version }}
+          body: "Release v${{ github.event.inputs.version }}"
+          draft: true
+          prerelease: false
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

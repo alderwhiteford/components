@@ -57,7 +57,7 @@ jobs:
         
       - name: Push changes to repository
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PA_TOKEN }}
         run: |
           git push --force-with-lease origin
   

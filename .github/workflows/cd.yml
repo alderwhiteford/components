@@ -2,8 +2,8 @@ name: Publish
 run-name: CD - Publish to NPM
 on:
   pull_request:
-    branches: 
-      - 'master'
+    branches: [master]
+    types: [closed]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,6 +11,10 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Confirm PR is merged
+        if: github.event.pull_request.merged != true
+        run: exit 1
+
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:

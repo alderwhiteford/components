@@ -68,6 +68,7 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
+          git checkout staging
           git checkout -b release-v${{ github.event.inputs.version }}
           git add package.json
           git commit -m "Update version to ${{ github.event.inputs.version }}"
@@ -87,7 +88,7 @@ jobs:
           repo: components
           title: "Update version to ${{ github.event.inputs.version }}"
           head: release-v${{ github.event.inputs.version }}
-          base: main
+          base: master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

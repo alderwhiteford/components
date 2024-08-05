@@ -4,6 +4,7 @@ on:
   pull_request:
     branches-ignore:
       - 'release-v*'
+      - 'master'
   
 # Ensures that only one job group runs at a time to avoid resource waste
 concurrency:

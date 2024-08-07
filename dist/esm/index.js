@@ -485,7 +485,7 @@ function requireReact_development () {
 		  return refObject;
 		}
 
-		var isArrayImpl = Array.isArray;  
+		var isArrayImpl = Array.isArray; // eslint-disable-next-line no-redeclare
 
 		function isArray(a) {
 		  return isArrayImpl(a);
@@ -651,7 +651,7 @@ function requireReact_development () {
 		          }
 		        }
 
-		       
+		      // eslint-disable-next-line no-fallthrough
 		    }
 		  }
 
@@ -2605,7 +2605,7 @@ function requireReact_development () {
 
 		      {
 		        if (!didWarnNoAwaitAct && typeof Promise !== 'undefined') {
-		           
+		          // eslint-disable-next-line no-undef
 		          Promise.resolve().then(function () {}).then(function () {
 		            if (!wasAwaited) {
 		              didWarnNoAwaitAct = true;
@@ -3054,7 +3054,7 @@ function requireReactJsxRuntime_development () {
 	          }
 	        }
 
-	       
+	      // eslint-disable-next-line no-fallthrough
 	    }
 	  }
 
@@ -3469,7 +3469,7 @@ function requireReactJsxRuntime_development () {
 	  }
 	}
 
-	var isArrayImpl = Array.isArray;  
+	var isArrayImpl = Array.isArray; // eslint-disable-next-line no-redeclare
 
 	function isArray(a) {
 	  return isArrayImpl(a);

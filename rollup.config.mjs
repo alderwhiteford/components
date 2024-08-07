@@ -29,7 +29,12 @@ export default [
                 tsconfig: './tsconfig.json',
                 exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.tsx']
             }),
-            postcss({ extensions: ['.css'], inject: true, extract: false })
+            postcss({ 
+                extensions: ['.css'], 
+                inject: true, 
+                extract: false, 
+                modules: true 
+            })
         ]
     }, 
     {

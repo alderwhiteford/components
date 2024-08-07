@@ -487,7 +487,7 @@ function requireReact_development () {
 		  return refObject;
 		}
 
-		var isArrayImpl = Array.isArray;  
+		var isArrayImpl = Array.isArray; // eslint-disable-next-line no-redeclare
 
 		function isArray(a) {
 		  return isArrayImpl(a);
@@ -653,7 +653,7 @@ function requireReact_development () {
 		          }
 		        }
 
-		       
+		      // eslint-disable-next-line no-fallthrough
 		    }
 		  }
 
@@ -2607,7 +2607,7 @@ function requireReact_development () {
 
 		      {
 		        if (!didWarnNoAwaitAct && typeof Promise !== 'undefined') {
-		           
+		          // eslint-disable-next-line no-undef
 		          Promise.resolve().then(function () {}).then(function () {
 		            if (!wasAwaited) {
 		              didWarnNoAwaitAct = true;
@@ -2793,19 +2793,13 @@ function requireReact_development () {
 	return react_development.exports;
 }
 
-var hasRequiredReact;
-
-function requireReact () {
-	if (hasRequiredReact) return react.exports;
-	hasRequiredReact = 1;
-
-	if (process.env.NODE_ENV === 'production') {
-	  react.exports = requireReact_production_min();
-	} else {
-	  react.exports = requireReact_development();
-	}
-	return react.exports;
+if (process.env.NODE_ENV === 'production') {
+  react.exports = requireReact_production_min();
+} else {
+  react.exports = requireReact_development();
 }
+
+var reactExports = react.exports;
 
 /**
  * @license React
@@ -2822,7 +2816,7 @@ var hasRequiredReactJsxRuntime_production_min;
 function requireReactJsxRuntime_production_min () {
 	if (hasRequiredReactJsxRuntime_production_min) return reactJsxRuntime_production_min;
 	hasRequiredReactJsxRuntime_production_min = 1;
-var f=requireReact(),k=Symbol.for("react.element"),l=Symbol.for("react.fragment"),m=Object.prototype.hasOwnProperty,n=f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,p={key:!0,ref:!0,__self:!0,__source:!0};
+var f=reactExports,k=Symbol.for("react.element"),l=Symbol.for("react.fragment"),m=Object.prototype.hasOwnProperty,n=f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,p={key:!0,ref:!0,__self:!0,__source:!0};
 	function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&(e=""+a.key);void 0!==a.ref&&(h=a.ref);for(b in a)m.call(a,b)&&!p.hasOwnProperty(b)&&(d[b]=a[b]);if(c&&c.defaultProps)for(b in a=c.defaultProps,a)void 0===d[b]&&(d[b]=a[b]);return {$$typeof:k,type:c,key:e,ref:h,props:d,_owner:n.current}}reactJsxRuntime_production_min.Fragment=l;reactJsxRuntime_production_min.jsx=q;reactJsxRuntime_production_min.jsxs=q;
 	return reactJsxRuntime_production_min;
 }
@@ -2848,7 +2842,7 @@ function requireReactJsxRuntime_development () {
 	if (process.env.NODE_ENV !== "production") {
 	  (function() {
 
-	var React = requireReact();
+	var React = reactExports;
 
 	// ATTENTION
 	// When adding new symbols to this file,
@@ -3056,7 +3050,7 @@ function requireReactJsxRuntime_development () {
 	          }
 	        }
 
-	       
+	      // eslint-disable-next-line no-fallthrough
 	    }
 	  }
 
@@ -3471,7 +3465,7 @@ function requireReactJsxRuntime_development () {
 	  }
 	}
 
-	var isArrayImpl = Array.isArray;  
+	var isArrayImpl = Array.isArray; // eslint-disable-next-line no-redeclare
 
 	function isArray(a) {
 	  return isArrayImpl(a);
@@ -4171,10 +4165,44 @@ if (process.env.NODE_ENV === 'production') {
 
 var jsxRuntimeExports = jsxRuntime.exports;
 
-/** A react component */
-const Test = ({ test, somethingElse }) => {
-    return (jsxRuntimeExports.jsx("div", { title: 'test', "data-id": somethingElse, children: test }));
-};
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
 
-exports.Test = Test;
+  if (typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css_248z = ".styles-module_linkContainer__NpjuV {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    overflow: hidden;\n    cursor: pointer;\n    text-decoration: none;\n    color: black;\n}\n\n.styles-module_linkCharacter__cDQEp {\n    text-align: center;\n    display: flex;\n    flex-direction: column;\n    position: relative;\n    transition: transform 0.2s;\n    transform: translateY(0);\n}\n\n.styles-module_linkCharacter__cDQEp::before {\n    content: attr(data-char);\n    position: absolute;\n    top: -1.2rem;\n}\n";
+var styles = {"linkContainer":"styles-module_linkContainer__NpjuV","linkCharacter":"styles-module_linkCharacter__cDQEp"};
+styleInject(css_248z);
+
+function Link({ text, href, internal = false }) {
+    const [hovered, setHovered] = reactExports.useState(false);
+    return (jsxRuntimeExports.jsx("a", { className: styles.linkContainer, "data-testid": 'link-container-test', href: href, target: internal ? '_self' : '_blank', rel: "noreferrer", onMouseOver: () => setHovered(true), onMouseLeave: () => setHovered(false), children: text.split('').map((char, index) => jsxRuntimeExports.jsx("span", { "data-testid": `link-char-${char}-${index}-test`, className: styles.linkCharacter, "data-char": char, style: {
+                transform: hovered ? 'translateY(1.2rem)' : 'translateY(0)',
+                transitionDelay: `${index * 0.0075}s`
+            }, children: char == ' ' ? jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: "\u00A0" }) : char }, index)) }));
+}
+
+exports.Link = Link;
 //# sourceMappingURL=index.js.map

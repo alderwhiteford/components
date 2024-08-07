@@ -1,0 +1,24 @@
+.linkContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+.linkCharacter {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.2s;
+    transform: translateY(0);
+}
+
+.linkCharacter::before {
+    content: attr(data-char);
+    position: absolute;
+    top: -1.2rem;
+}
